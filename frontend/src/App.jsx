@@ -296,9 +296,18 @@ function App() {
                 {selectedDbName}
             </span>
           </div>
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <div style={{ padding: '6px 12px', background: '#ecfdf5', color: '#10b981', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, border: '1px solid #d1fae5' }}>SYSTEM ONLINE</div>
-            <User size={20} color="#64748b" />
+          <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+            <div className="status-badge">
+                <div className="status-dot"></div>
+                SYSTEM ONLINE
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', borderLeft: '1px solid #e2e8f0', paddingLeft: '24px' }}>
+                <Search size={20} color="#94a3b8" style={{ cursor: 'pointer' }} />
+                <Bell size={20} color="#94a3b8" style={{ cursor: 'pointer' }} />
+                <div style={{ width: '36px', height: '36px', background: '#f1f5f9', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #e2e8f0' }}>
+                    <User size={20} color="#64748b" />
+                </div>
+            </div>
           </div>
         </header>
 
@@ -310,16 +319,16 @@ function App() {
                   {msg.type === 'ai' ? (
                     <div className="ai-container" style={{ width: '100%' }}>
                       <div className="agent-header">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                          <div style={{ width: '28px', height: '28px', background: 'white', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyCenter: 'center', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
-                            <Cpu size={16} color="#3b82f6" />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div style={{ width: '32px', height: '32px', background: 'white', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow-md)', border: '1px solid #f1f5f9' }}>
+                            <Cpu size={18} color="#3b82f6" />
                           </div>
-                          <span style={{ fontWeight: 800, fontSize: '0.8rem', letterSpacing: '0.05em' }}>AI INTELLIGENCE</span>
-                          {msg.latency && <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>• {msg.latency}</span>}
+                          <span style={{ fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.02em', color: '#1e293b' }}>INTELLIGENCE LAYER</span>
+                          {msg.latency && <span style={{ color: '#94a3b8', fontSize: '0.75rem', fontWeight: 600 }}>• {msg.latency}</span>}
                         </div>
                         <div style={{ display: 'flex', gap: '8px' }}>
                              {msg.confidence_score !== undefined && (
-                                <div style={{ background: msg.confidence_level === 'High' ? '#ecfdf5' : '#fff7ed', color: msg.confidence_level === 'High' ? '#10b981' : '#f59e0b', padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 800, border: '1px solid currentColor' }}>
+                                <div style={{ background: msg.confidence_level === 'High' ? '#f0fdf4' : '#fffbeb', color: msg.confidence_level === 'High' ? '#16a34a' : '#d97706', padding: '6px 14px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800, border: '1px solid currentColor' }}>
                                     {msg.confidence_score}% CONFIDENCE
                                 </div>
                              )}
@@ -330,25 +339,25 @@ function App() {
                         {renderMessageContent(msg)}
                         
                         {msg.error && (
-                            <div style={{ marginTop: '20px', padding: '16px', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '12px', color: '#b91c1c', fontSize: '0.9rem', display: 'flex', gap: '12px' }}>
-                                <Lock size={18} style={{ flexShrink: 0 }} />
-                                <div><strong>System Warning:</strong> {msg.error}</div>
+                            <div style={{ marginTop: '24px', padding: '20px', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '16px', color: '#b91c1c', fontSize: '0.95rem', display: 'flex', gap: '16px', alignItems: 'center' }}>
+                                <Lock size={20} style={{ flexShrink: 0 }} />
+                                <div><strong style={{ display: 'block', marginBottom: '2px' }}>Security Protocol Alert</strong> {msg.error}</div>
                             </div>
                         )}
 
                         {msg.sql && renderCodeBlock(msg.sql, msg.id)}
 
                         {(msg.data || msg.explanation || msg.query_plan) && (
-                            <div style={{ marginTop: '24px', borderTop: '1px solid #f1f5f9', paddingTop: '24px' }}>
-                                <div style={{ display: 'flex', gap: '24px', marginBottom: '16px' }}>
-                                    <button className="nav-item active" style={{ padding: '0 0 8px', borderRadius: 0, background: 'none', border: 'none', borderBottom: '2px solid #3b82f6' }}>Data Output</button>
-                                    {msg.explanation && <button className="nav-item" style={{ padding: '0 0 8px', borderRadius: 0, background: 'none', border: 'none', opacity: 0.5 }}>Deep Insights</button>}
+                            <div style={{ marginTop: '32px', borderTop: '1px solid #f1f5f9', paddingTop: '32px' }}>
+                                <div style={{ display: 'flex', gap: '32px', marginBottom: '20px' }}>
+                                    <button className="nav-item active" style={{ padding: '0 0 12px', borderRadius: 0, background: 'none', border: 'none', borderBottom: '2px solid #3b82f6', width: 'auto', fontSize: '0.85rem' }}>RESULT DATA</button>
+                                    {msg.explanation && <button className="nav-item" style={{ padding: '0 0 12px', borderRadius: 0, background: 'none', border: 'none', opacity: 0.4, width: 'auto', fontSize: '0.85rem' }}>ANALYSIS</button>}
                                 </div>
                                 
                                 {msg.data && renderTable(msg.data)}
                                 
                                 {msg.explanation && (
-                                    <div className="markdown-content" style={{ marginTop: '16px', background: '#f8fafc', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                                    <div className="markdown-content" style={{ marginTop: '20px', background: '#f8fafc', padding: '24px', borderRadius: '16px', border: '1px solid #e2e8f0', color: '#334155' }}>
                                         <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.explanation}</ReactMarkdown>
                                     </div>
                                 )}
@@ -363,20 +372,20 @@ function App() {
               ))}
               {loading && (
                 <div className="message ai">
-                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#64748b', fontSize: '0.9rem', background: 'white', padding: '16px 24px', borderRadius: '20px', width: 'fit-content', boxShadow: 'var(--shadow)' }}>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '20px', color: '#64748b', fontSize: '0.95rem', background: 'white', padding: '20px 32px', borderRadius: '24px', width: 'fit-content', boxShadow: 'var(--shadow-xl)', border: '1px solid #f1f5f9' }}>
                         <div className="loading-dots"><div className="dot"></div><div className="dot"></div><div className="dot"></div></div>
-                        <span>Agentic workflow in progress...</span>
+                        <span style={{ fontWeight: 600 }}>Executing multi-agent chain...</span>
                    </div>
                 </div>
               )}
               <div ref={chatEndRef} />
             </>
           ) : (
-            <div style={{ padding: '80px 40px', textAlign: 'center', color: '#64748b' }}>
-                <Activity size={64} style={{ margin: '0 auto 24px', opacity: 0.1, color: '#3b82f6' }} />
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1e293b' }}>Module Under Refactor</h3>
-                <p style={{ marginTop: '12px' }}>History and Benchmarking are being optimized for the new multi-db engine.</p>
-                <button onClick={() => setActiveView('chat')} style={{ marginTop: '32px', background: '#0f172a', color: 'white', border: 'none', padding: '12px 32px', borderRadius: '12px', fontWeight: 600, cursor: 'pointer' }}>Return to Workspace</button>
+            <div style={{ padding: '100px 40px', textAlign: 'center', color: '#64748b' }}>
+                <Activity size={80} style={{ margin: '0 auto 32px', opacity: 0.05, color: '#3b82f6' }} />
+                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a' }}>Module Under Maintenance</h3>
+                <p style={{ marginTop: '16px', fontSize: '1.1rem' }}>The Enterprise Dashboard and History modules are being refactored for scale.</p>
+                <button onClick={() => setActiveView('chat')} style={{ marginTop: '40px', background: '#0f172a', color: 'white', border: 'none', padding: '14px 40px', borderRadius: '16px', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}>Return to Workspace</button>
             </div>
           )}
         </div>
