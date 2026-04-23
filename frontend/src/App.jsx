@@ -56,9 +56,11 @@ function App() {
   const fetchDatabases = async (type = selectedDbType) => {
     try {
       const res = await axios.get(`${API_BASE}/databases?db_type=${type}`);
-      setDatabases(res.data.databases);
+      setDatabases(res.data.databases || []);
     } catch (err) {
       console.error('Failed to fetch databases', err);
+      setDatabases([]);
+      setSelectedDbName('Offline / No Connection');
     }
   };
 
