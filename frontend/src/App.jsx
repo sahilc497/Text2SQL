@@ -67,6 +67,12 @@ function App() {
   }, [selectedDbType]);
 
   useEffect(() => {
+    if (databases.length > 0 && !databases.includes(selectedDbName)) {
+      setSelectedDbName(databases[0]);
+    }
+  }, [databases]);
+
+  useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -94,7 +100,7 @@ function App() {
       const aiMsg = { 
         id: Date.now() + 1, 
         type: 'ai', 
-        text: typeof res.data.result === 'string' && !res.data.result.startsWith('[') ? res.data.result : `Analysis complete for **${selectedDbName}**.`,
+        text: typeof res.data.result === 'string' ? res.data.result : (Array.isArray(res.data.result) && typeof res.data.result[0] === 'string' ? res.data.result.join(', ') : `Analysis complete for **${selectedDbName}**.`),
         sql: res.data.sql,
         explanation: res.data.explanation,
         query_plan: res.data.query_plan,

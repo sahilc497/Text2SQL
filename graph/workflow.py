@@ -197,11 +197,39 @@ async def insights_node(state: AgentState):
     result = await run_crew_with_retry(crew)
     return {"explanation": str(result).strip()}
 
+async def db_ops_node(state: AgentState):
+    print(f"DEBUG: db_ops_node started. Intent: {state['intent']}")
+    intent = state['intent']
+    db_type = state['db_type']
+    db_name = state['db_name']
+    
+    if intent == "LIST_DB":
+        from agents.db_agent import DBTools
+        dbs = await DBTools.list_databases(db_type)
+        res = f"Available {db_type} databases: " + ", ".join(dbs)
+        print(f"DEBUG: LIST_DB result: {res}")
+        return {"result": res}
+    
+    if intent == "LIST_TABLES":
+        from agents.db_agent import DBTools
+        tables = await DBTools.list_tables(db_type, db_name)
+        res = f"Tables in {db_name} ({db_type}): " + ", ".join(tables)
+        print(f"DEBUG: LIST_TABLES result: {res}")
+        return {"result": res}
+    
+    if intent == "USE_DB":
+        res = f"Successfully switched to {db_name}. How can I help you with this database?"
+        print(f"DEBUG: USE_DB result: {res}")
+        return {"result": res}
+
+    return {"result": "Operation completed."}
+
 # Router
 def route_after_intent(state: AgentState):
+    print(f"DEBUG: route_after_intent. Intent: {state['intent']}")
     if state['intent'] == "SQL_QUERY": return "extract_schema"
     if state['intent'] == "INSIGHTS": return "extract_schema"
-    return "db_ops" # Placeholder for other intents
+    return "db_ops"
 
 def route_after_execution(state: AgentState):
     if state['error'] and state['retry_count'] < 2: return "generate_sql"
@@ -216,20 +244,22 @@ workflow.add_node("extract_schema", schema_node)
 workflow.add_node("generate_sql", sql_generation_node)
 workflow.add_node("validate_sql", validation_node)
 workflow.add_node("execute_sql", execution_node)
-workflow.add_node("explain_and_visualize", explain_node) # Combined for speed
+workflow.add_node("explain_and_visualize", explain_node)
 workflow.add_node("visualize", visualization_node)
 workflow.add_node("generate_insights", insights_node)
+workflow.add_node("db_ops", db_ops_node)
 
 workflow.set_entry_point("classify_intent")
 
 workflow.add_conditional_edges("classify_intent", route_after_intent, {
     "extract_schema": "extract_schema",
-    "db_ops": END # Implementation for DB ops can be added later
+    "db_ops": "db_ops"
 })
 
 workflow.add_edge("extract_schema", "generate_sql")
 workflow.add_edge("generate_sql", "validate_sql")
 workflow.add_edge("validate_sql", "execute_sql")
+workflow.add_edge("db_ops", END)
 
 workflow.add_conditional_edges("execute_sql", route_after_execution, {
     "generate_sql": "generate_sql",
