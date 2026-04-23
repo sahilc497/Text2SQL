@@ -22,3 +22,20 @@ class DBTools:
             return await db.list_tables()
         except Exception as e:
             return [f"Error: {str(e)}"]
+
+from crewai import Agent
+from config import settings
+
+class DBAgent:
+    def __init__(self):
+        self.llm = f"mistral/{settings.MISTRAL_MODEL_FAST}"
+
+    def get_agent(self):
+        return Agent(
+            role='Database Manager',
+            goal='Manage database operations like listing and creating databases, and listing tables.',
+            backstory='You are a database administrator. When listing databases or tables, always use a clean Markdown list or table. Be clear and helpful.',
+            llm=self.llm,
+            verbose=True,
+            allow_delegation=False
+        )
