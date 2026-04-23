@@ -239,16 +239,16 @@ function App() {
   const renderEvaluationView = () => {
     if (!evalStats) {
       return (
-        <div style={{ padding: '80px 40px', textAlign: 'center', color: '#64748b' }}>
-            <Activity size={80} style={{ margin: '0 auto 32px', opacity: 0.1, color: '#3b82f6' }} />
-            <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a' }}>System Performance Audit</h3>
-            <p style={{ marginTop: '16px', fontSize: '1.1rem', maxWidth: '600px', margin: '16px auto' }}>
+        <div style={{ padding: '100px 40px', textAlign: 'center' }}>
+            <Activity size={64} style={{ margin: '0 auto 24px', opacity: 0.08, color: 'var(--accent)' }} />
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>System Performance Audit</h3>
+            <p style={{ marginTop: '12px', fontSize: '0.95rem', maxWidth: '500px', margin: '12px auto', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                 Analyze the accuracy and latency of the multi-agent SQL engine across all connected databases.
             </p>
             <button 
                 onClick={runBenchmark} 
                 disabled={loading}
-                style={{ marginTop: '40px', background: '#3b82f6', color: 'white', border: 'none', padding: '16px 40px', borderRadius: '16px', fontWeight: 700, cursor: 'pointer', boxShadow: '0 10px 20px rgba(59, 130, 246, 0.2)' }}
+                style={{ marginTop: '32px', background: 'linear-gradient(135deg, #2563EB, #4F46E5)', color: 'white', border: 'none', padding: '12px 32px', borderRadius: 'var(--radius-md)', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 16px rgba(37, 99, 235, 0.3)', fontSize: '0.85rem', transition: 'all 0.2s' }}
             >
                 {loading ? 'Executing Audit...' : 'Launch Production Benchmark'}
             </button>
@@ -258,27 +258,27 @@ function App() {
 
     return (
       <div style={{ animation: 'slideInUp 0.4s ease-out' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px', marginBottom: '40px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '32px' }}>
             {[
-                { label: 'System Accuracy', value: evalStats.accuracy, icon: <CheckCircle2 size={20} color="#10b981" /> },
-                { label: 'Avg. Latency', value: evalStats.avg_latency, icon: <Clock size={20} color="#3b82f6" /> },
-                { label: 'Confidence Floor', value: evalStats.avg_confidence, icon: <Zap size={20} color="#f59e0b" /> },
-                { label: 'Test Coverage', value: `${evalStats.total_queries} Queries`, icon: <Database size={20} color="#8b5cf6" /> }
+                { label: 'System Accuracy', value: evalStats.accuracy, icon: <CheckCircle2 size={18} color="var(--success)" /> },
+                { label: 'Avg. Latency', value: evalStats.avg_latency, icon: <Clock size={18} color="var(--accent)" /> },
+                { label: 'Confidence Floor', value: evalStats.avg_confidence, icon: <Zap size={18} color="var(--warning)" /> },
+                { label: 'Test Coverage', value: `${evalStats.total_queries} Queries`, icon: <Database size={18} color="var(--violet)" /> }
             ].map((stat, i) => (
-                <div key={i} className="agent-response-card" style={{ padding: '24px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                        <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>{stat.label}</span>
+                <div key={i} className="agent-response-card" style={{ padding: '20px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{stat.label}</span>
                         {stat.icon}
                     </div>
-                    <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a' }}>{stat.value}</div>
+                    <div style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>{stat.value}</div>
                 </div>
             ))}
         </div>
 
         <div className="agent-response-card" style={{ padding: '0' }}>
-            <div style={{ padding: '24px 32px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 800 }}>Audit Logs</h3>
-                <button onClick={runBenchmark} style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer' }}>Re-run Audit</button>
+            <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 700 }}>Audit Logs</h3>
+                <button onClick={runBenchmark} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer' }}>Re-run Audit</button>
             </div>
             <div className="data-table-container" style={{ border: 'none', borderRadius: 0 }}>
                 <table className="data-table">
@@ -342,18 +342,18 @@ function App() {
                 >MySQL</button>
             </div>
             
-            <div className="db-selector" onClick={() => setShowDbDropdown(!showDbDropdown)} style={{ position: 'relative', background: 'white', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 14px', marginTop: '12px' }}>
-                <Database size={14} color={selectedDbType === 'mysql' ? '#f59e0b' : '#3b82f6'} />
-                <span style={{ fontSize: '0.85rem', flex: 1, fontWeight: 600, marginLeft: '8px' }}>{selectedDbName}</span>
-                <ChevronDown size={12} />
+            <div className="db-selector" onClick={() => setShowDbDropdown(!showDbDropdown)} style={{ position: 'relative', background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border-sidebar)', borderRadius: 'var(--radius-md)', padding: '10px 14px', marginTop: '12px' }}>
+                <Database size={14} color={selectedDbType === 'mysql' ? '#F59E0B' : '#93BBFD'} />
+                <span style={{ fontSize: '0.82rem', flex: 1, fontWeight: 500, marginLeft: '8px', color: 'var(--text-inverse)' }}>{selectedDbName}</span>
+                <ChevronDown size={12} color="var(--text-muted)" />
                 
                 {showDbDropdown && (
-                    <div className="db-dropdown" style={{ background: 'white', border: '1px solid var(--border)', top: '100%', boxShadow: 'var(--shadow-elevated)', borderRadius: '10px' }}>
+                    <div className="db-dropdown" style={{ background: 'var(--bg-surface-1)', border: '1px solid var(--border)', top: 'calc(100% + 6px)', boxShadow: 'var(--shadow-lg)', borderRadius: 'var(--radius-md)' }}>
                     {databases.map(db => (
                         <div 
                         key={db} 
                         className="db-dropdown-item"
-                        style={{ color: 'var(--primary)', padding: '10px 16px' }}
+                        style={{ color: 'var(--text-primary)', padding: '10px 16px' }}
                         onClick={(e) => { e.stopPropagation(); setSelectedDbName(db); setShowDbDropdown(false); }}
                         >
                         {db}
@@ -376,9 +376,9 @@ function App() {
         </div>
 
         <div className="sidebar-label" style={{ marginTop: 'auto' }}>Security</div>
-        <div className="nav-item" style={{ background: 'white', border: '1px solid var(--border)', boxShadow: '0 1px 2px rgba(0,0,0,0.02)' }}>
-            <Shield size={14} color="#16A34A" />
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.02em' }}>{userRole.toUpperCase()} ACCESS</span>
+        <div className="nav-item" style={{ background: 'rgba(34, 197, 94, 0.06)', border: '1px solid rgba(34, 197, 94, 0.1)' }}>
+            <Shield size={14} color="var(--success)" />
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.03em', color: 'var(--success)' }}>{userRole.toUpperCase()} ACCESS</span>
         </div>
       </aside>
 
@@ -391,16 +391,16 @@ function App() {
                 {activeView === 'chat' ? selectedDbName : 'Engine Audit'}
             </span>
           </div>
-          <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
             <div className="status-badge">
                 <div className="status-dot"></div>
                 System Online
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', borderLeft: '1px solid var(--border)', paddingLeft: '24px' }}>
-                <Search size={18} color="var(--secondary)" style={{ cursor: 'pointer' }} />
-                <Bell size={18} color="var(--secondary)" style={{ cursor: 'pointer' }} />
-                <div style={{ width: '32px', height: '32px', background: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border)' }}>
-                    <User size={16} color="var(--secondary)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderLeft: '1px solid var(--border)', paddingLeft: '20px' }}>
+                <Search size={16} color="var(--text-muted)" style={{ cursor: 'pointer', transition: 'color 0.2s' }} />
+                <Bell size={16} color="var(--text-muted)" style={{ cursor: 'pointer', transition: 'color 0.2s' }} />
+                <div style={{ width: '30px', height: '30px', background: 'var(--bg-surface-1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border)', boxShadow: 'var(--shadow-xs)' }}>
+                    <User size={14} color="var(--text-secondary)" />
                 </div>
             </div>
           </div>
@@ -415,10 +415,11 @@ function App() {
                     <div className="ai-container" style={{ width: '100%' }}>
                       <div className="agent-header">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <span style={{ fontWeight: 700, fontSize: '0.7rem', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Intelligence Layer</span>
-                          {msg.latency && <span className="badge-pill" style={{ background: '#f3f4f6', color: '#6b7280', border: 'none' }}>{msg.latency}</span>}
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent-gradient)', boxShadow: '0 0 8px rgba(37, 99, 235, 0.4)' }}></div>
+                          <span style={{ fontWeight: 700, fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Intelligence Layer</span>
+                          {msg.latency && <span className="badge-pill" style={{ background: 'var(--bg-surface-2)', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>{msg.latency}</span>}
                         </div>
-                        <div style={{ display: 'flex', gap: '8px' }}>
+                        <div style={{ display: 'flex', gap: '6px' }}>
                              {msg.confidence_score !== undefined && (
                                 <div className="badge-pill">
                                     {msg.confidence_score}% Confidence
@@ -431,8 +432,8 @@ function App() {
                         {renderMessageContent(msg)}
                         
                         {msg.error && (
-                            <div style={{ marginTop: '20px', padding: '16px', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '12px', color: '#b91c1c', fontSize: '0.9rem', display: 'flex', gap: '12px', alignItems: 'center' }}>
-                                <Lock size={16} style={{ flexShrink: 0 }} />
+                            <div style={{ marginTop: '16px', padding: '14px 16px', background: 'var(--error-soft)', border: '1px solid rgba(239, 68, 68, 0.12)', borderRadius: 'var(--radius-md)', color: 'var(--error)', fontSize: '0.85rem', display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                <Lock size={14} style={{ flexShrink: 0 }} />
                                 <div><strong>Access Restriction:</strong> {msg.error}</div>
                             </div>
                         )}
@@ -440,16 +441,16 @@ function App() {
                         {msg.sql && renderCodeBlock(msg.sql, msg.id)}
 
                         {(msg.data || msg.explanation || msg.query_plan) && (
-                            <div style={{ marginTop: '24px', borderTop: '1px solid var(--border)', paddingTop: '24px' }}>
-                                <div style={{ display: 'flex', gap: '20px', marginBottom: '16px' }}>
-                                    <button style={{ padding: '0 0 8px', borderRadius: 0, background: 'none', border: 'none', borderBottom: '2px solid var(--accent)', color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer' }}>Dataset</button>
-                                    {msg.explanation && <button style={{ padding: '0 0 8px', borderRadius: 0, background: 'none', border: 'none', color: 'var(--secondary)', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', opacity: 0.6 }}>Execution Analysis</button>}
+                            <div style={{ marginTop: '20px', borderTop: '1px solid var(--border)', paddingTop: '20px' }}>
+                                <div style={{ display: 'flex', gap: '16px', marginBottom: '14px' }}>
+                                    <button style={{ padding: '0 0 6px', borderRadius: 0, background: 'none', border: 'none', borderBottom: '2px solid var(--accent)', color: 'var(--text-primary)', fontWeight: 700, fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'uppercase', letterSpacing: '0.03em' }}>Dataset</button>
+                                    {msg.explanation && <button style={{ padding: '0 0 6px', borderRadius: 0, background: 'none', border: 'none', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit', textTransform: 'uppercase', letterSpacing: '0.03em' }}>Analysis</button>}
                                 </div>
                                 
                                 {msg.data && renderTable(msg.data)}
                                 
                                 {msg.explanation && (
-                                    <div className="markdown-content" style={{ marginTop: '16px', color: 'var(--secondary)', fontSize: '0.9rem' }}>
+                                    <div className="markdown-content" style={{ marginTop: '14px', color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
                                         <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.explanation}</ReactMarkdown>
                                     </div>
                                 )}
@@ -464,9 +465,9 @@ function App() {
               ))}
               {loading && (
                 <div className="message ai">
-                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--secondary)', fontSize: '0.85rem', background: 'white', padding: '12px 20px', borderRadius: '12px', width: 'fit-content', border: '1px solid var(--border)', boxShadow: 'var(--shadow-float)' }}>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-secondary)', fontSize: '0.82rem', background: 'var(--bg-surface-1)', padding: '10px 18px', borderRadius: 'var(--radius-md)', width: 'fit-content', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }}>
                         <div className="loading-dots"><div className="dot"></div><div className="dot"></div><div className="dot"></div></div>
-                        <span style={{ fontWeight: 600 }}>Executing Multi-Agent Workflow...</span>
+                        <span style={{ fontWeight: 600 }}>Executing multi-agent workflow...</span>
                    </div>
                 </div>
               )}
