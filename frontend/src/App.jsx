@@ -326,31 +326,34 @@ function App() {
         </div>
 
         <div className="sidebar-label">Database Configuration</div>
-        <div style={{ padding: '0 8px' }}>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+        <div style={{ padding: '0 12px' }}>
+            <div className="segmented-control">
+                <div 
+                    className="segmented-slider" 
+                    style={{ transform: selectedDbType === 'mysql' ? 'translateX(100%)' : 'translateX(0)' }}
+                ></div>
                 <button 
+                    className={selectedDbType === 'postgres' ? 'active' : ''} 
                     onClick={() => setSelectedDbType('postgres')}
-                    className={`nav-item ${selectedDbType === 'postgres' ? 'active' : ''}`}
-                    style={{ flex: 1, justifyContent: 'center', fontSize: '0.8rem', padding: '10px' }}
                 >Postgres</button>
                 <button 
+                    className={selectedDbType === 'mysql' ? 'active' : ''} 
                     onClick={() => setSelectedDbType('mysql')}
-                    className={`nav-item ${selectedDbType === 'mysql' ? 'active' : ''}`}
-                    style={{ flex: 1, justifyContent: 'center', fontSize: '0.8rem', padding: '10px' }}
                 >MySQL</button>
             </div>
             
-            <div className="db-selector" onClick={() => setShowDbDropdown(!showDbDropdown)} style={{ position: 'relative' }}>
-                <Database size={16} color={selectedDbType === 'mysql' ? '#f59e0b' : '#3b82f6'} />
-                <span style={{ fontSize: '0.9rem', flex: 1, fontWeight: 500 }}>{selectedDbName}</span>
-                <ChevronDown size={14} />
+            <div className="db-selector" onClick={() => setShowDbDropdown(!showDbDropdown)} style={{ position: 'relative', background: 'white', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 14px', marginTop: '12px' }}>
+                <Database size={14} color={selectedDbType === 'mysql' ? '#f59e0b' : '#3b82f6'} />
+                <span style={{ fontSize: '0.85rem', flex: 1, fontWeight: 600, marginLeft: '8px' }}>{selectedDbName}</span>
+                <ChevronDown size={12} />
                 
                 {showDbDropdown && (
-                    <div className="db-dropdown">
+                    <div className="db-dropdown" style={{ background: 'white', border: '1px solid var(--border)', top: '100%', boxShadow: 'var(--shadow-elevated)', borderRadius: '10px' }}>
                     {databases.map(db => (
                         <div 
                         key={db} 
-                        className={`db-dropdown-item ${selectedDbName === db ? 'active' : ''}`}
+                        className="db-dropdown-item"
+                        style={{ color: 'var(--primary)', padding: '10px 16px' }}
                         onClick={(e) => { e.stopPropagation(); setSelectedDbName(db); setShowDbDropdown(false); }}
                         >
                         {db}
@@ -363,42 +366,41 @@ function App() {
 
         <div className="sidebar-label">Navigation</div>
         <div className={`nav-item ${activeView === 'chat' ? 'active' : ''}`} onClick={() => setActiveView('chat')}>
-          <TableIcon size={18} /> Analytics Chat
+          <TableIcon size={16} /> Analytics Chat
         </div>
         <div className={`nav-item ${activeView === 'history' ? 'active' : ''}`} onClick={() => setActiveView('history')}>
-          <History size={18} /> Query Log
+          <History size={16} /> Query Log
         </div>
         <div className={`nav-item ${activeView === 'evaluation' ? 'active' : ''}`} onClick={() => setActiveView('evaluation')}>
-          <Activity size={18} /> Engine Audit
+          <Activity size={16} /> Engine Audit
         </div>
 
         <div className="sidebar-label" style={{ marginTop: 'auto' }}>Security</div>
-        <div className="nav-item" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <Shield size={16} color="#10b981" />
-            <span style={{ fontSize: '0.85rem' }}>{userRole.toUpperCase()} ACCESS</span>
+        <div className="nav-item" style={{ background: 'white', border: '1px solid var(--border)', boxShadow: '0 1px 2px rgba(0,0,0,0.02)' }}>
+            <Shield size={14} color="#16A34A" />
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.02em' }}>{userRole.toUpperCase()} ACCESS</span>
         </div>
       </aside>
 
       <main className="main-content">
         <header className="top-bar">
           <div className="breadcrumbs">
-            <span style={{ opacity: 0.5 }}>Analytics</span>
-            <ChevronRight size={14} />
-            <span className="breadcrumb-active" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Activity size={14} color="#3b82f6" />
-                {activeView === 'chat' ? selectedDbName : 'System Audit'}
+            <span>Analytics</span>
+            <ChevronRight size={12} />
+            <span className="breadcrumb-active">
+                {activeView === 'chat' ? selectedDbName : 'Engine Audit'}
             </span>
           </div>
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div className="status-badge">
                 <div className="status-dot"></div>
-                SYSTEM ONLINE
+                System Online
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', borderLeft: '1px solid #e2e8f0', paddingLeft: '24px' }}>
-                <Search size={20} color="#94a3b8" style={{ cursor: 'pointer' }} />
-                <Bell size={20} color="#94a3b8" style={{ cursor: 'pointer' }} />
-                <div style={{ width: '36px', height: '36px', background: '#f1f5f9', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #e2e8f0' }}>
-                    <User size={20} color="#64748b" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', borderLeft: '1px solid var(--border)', paddingLeft: '24px' }}>
+                <Search size={18} color="var(--secondary)" style={{ cursor: 'pointer' }} />
+                <Bell size={18} color="var(--secondary)" style={{ cursor: 'pointer' }} />
+                <div style={{ width: '32px', height: '32px', background: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border)' }}>
+                    <User size={16} color="var(--secondary)" />
                 </div>
             </div>
           </div>
@@ -412,17 +414,14 @@ function App() {
                   {msg.type === 'ai' ? (
                     <div className="ai-container" style={{ width: '100%' }}>
                       <div className="agent-header">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <div style={{ width: '32px', height: '32px', background: 'white', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow-md)', border: '1px solid #f1f5f9' }}>
-                            <Cpu size={18} color="#3b82f6" />
-                          </div>
-                          <span style={{ fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.02em', color: '#1e293b' }}>INTELLIGENCE LAYER</span>
-                          {msg.latency && <span style={{ color: '#94a3b8', fontSize: '0.75rem', fontWeight: 600 }}>• {msg.latency}</span>}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontWeight: 700, fontSize: '0.7rem', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Intelligence Layer</span>
+                          {msg.latency && <span className="badge-pill" style={{ background: '#f3f4f6', color: '#6b7280', border: 'none' }}>{msg.latency}</span>}
                         </div>
                         <div style={{ display: 'flex', gap: '8px' }}>
                              {msg.confidence_score !== undefined && (
-                                <div style={{ background: msg.confidence_level === 'High' ? '#f0fdf4' : '#fffbeb', color: msg.confidence_level === 'High' ? '#16a34a' : '#d97706', padding: '6px 14px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800, border: '1px solid currentColor' }}>
-                                    {msg.confidence_score}% CONFIDENCE
+                                <div className="badge-pill">
+                                    {msg.confidence_score}% Confidence
                                 </div>
                              )}
                         </div>
@@ -432,25 +431,25 @@ function App() {
                         {renderMessageContent(msg)}
                         
                         {msg.error && (
-                            <div style={{ marginTop: '24px', padding: '20px', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '16px', color: '#b91c1c', fontSize: '0.95rem', display: 'flex', gap: '16px', alignItems: 'center' }}>
-                                <Lock size={20} style={{ flexShrink: 0 }} />
-                                <div><strong style={{ display: 'block', marginBottom: '2px' }}>Security Protocol Alert</strong> {msg.error}</div>
+                            <div style={{ marginTop: '20px', padding: '16px', background: '#fef2f2', border: '1px solid #fee2e2', borderRadius: '12px', color: '#b91c1c', fontSize: '0.9rem', display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                <Lock size={16} style={{ flexShrink: 0 }} />
+                                <div><strong>Access Restriction:</strong> {msg.error}</div>
                             </div>
                         )}
 
                         {msg.sql && renderCodeBlock(msg.sql, msg.id)}
 
                         {(msg.data || msg.explanation || msg.query_plan) && (
-                            <div style={{ marginTop: '32px', borderTop: '1px solid #f1f5f9', paddingTop: '32px' }}>
-                                <div style={{ display: 'flex', gap: '32px', marginBottom: '20px' }}>
-                                    <button className="nav-item active" style={{ padding: '0 0 12px', borderRadius: 0, background: 'none', border: 'none', borderBottom: '2px solid #3b82f6', width: 'auto', fontSize: '0.85rem' }}>RESULT DATA</button>
-                                    {msg.explanation && <button className="nav-item" style={{ padding: '0 0 12px', borderRadius: 0, background: 'none', border: 'none', opacity: 0.4, width: 'auto', fontSize: '0.85rem' }}>ANALYSIS</button>}
+                            <div style={{ marginTop: '24px', borderTop: '1px solid var(--border)', paddingTop: '24px' }}>
+                                <div style={{ display: 'flex', gap: '20px', marginBottom: '16px' }}>
+                                    <button style={{ padding: '0 0 8px', borderRadius: 0, background: 'none', border: 'none', borderBottom: '2px solid var(--accent)', color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer' }}>Dataset</button>
+                                    {msg.explanation && <button style={{ padding: '0 0 8px', borderRadius: 0, background: 'none', border: 'none', color: 'var(--secondary)', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', opacity: 0.6 }}>Execution Analysis</button>}
                                 </div>
                                 
                                 {msg.data && renderTable(msg.data)}
                                 
                                 {msg.explanation && (
-                                    <div className="markdown-content" style={{ marginTop: '20px', background: '#f8fafc', padding: '24px', borderRadius: '16px', border: '1px solid #e2e8f0', color: '#334155' }}>
+                                    <div className="markdown-content" style={{ marginTop: '16px', color: 'var(--secondary)', fontSize: '0.9rem' }}>
                                         <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.explanation}</ReactMarkdown>
                                     </div>
                                 )}
@@ -465,9 +464,9 @@ function App() {
               ))}
               {loading && (
                 <div className="message ai">
-                   <div style={{ display: 'flex', alignItems: 'center', gap: '20px', color: '#64748b', fontSize: '0.95rem', background: 'white', padding: '20px 32px', borderRadius: '24px', width: 'fit-content', boxShadow: 'var(--shadow-xl)', border: '1px solid #f1f5f9' }}>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--secondary)', fontSize: '0.85rem', background: 'white', padding: '12px 20px', borderRadius: '12px', width: 'fit-content', border: '1px solid var(--border)', boxShadow: 'var(--shadow-float)' }}>
                         <div className="loading-dots"><div className="dot"></div><div className="dot"></div><div className="dot"></div></div>
-                        <span style={{ fontWeight: 600 }}>Executing multi-agent chain...</span>
+                        <span style={{ fontWeight: 600 }}>Executing Multi-Agent Workflow...</span>
                    </div>
                 </div>
               )}
@@ -477,6 +476,28 @@ function App() {
             renderEvaluationView()
           )}
         </div>
+
+        {activeView === 'chat' && (
+          <div className="input-area">
+            <div className="input-container">
+                <textarea 
+                    rows="1" 
+                    placeholder={`Search within ${selectedDbName}...`}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSend())}
+                />
+                <button 
+                    className="send-btn" 
+                    onClick={() => handleSend()} 
+                    disabled={loading || !input.trim()}
+                >
+                    <Send size={16} />
+                </button>
+            </div>
+          </div>
+        )}
+      </main>
 
         {activeView === 'chat' && (
           <div className="input-area">
